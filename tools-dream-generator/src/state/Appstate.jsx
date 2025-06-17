@@ -9,13 +9,18 @@ function appReducer(state, action) {
       return { ...state, userInput: action.payload };
     case 'START_GENERATION':
       return { ...state, isLoading: true };
-    case 'STOP_PROP_DATA':
+    case 'SET_PROP_DATA':
       return {
         ...state,
         currentProp: action.payload,
         currentView: 'prop',
         isLoading: false,
       };
+    case 'NAVIGATE_TO_INPUT':
+    return {
+    ...state,
+    currentView:'input'
+    }
     default:
       return state;
   }

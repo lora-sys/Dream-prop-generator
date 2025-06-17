@@ -1,12 +1,14 @@
 import { useAppState } from "../state/Appstate";
-
+import { useNavigate } from "react-router-dom";
 export default function InputView() {
   const { state, dispatch } = useAppState();
+  const navigator=useNavigate();
   const handleSubmit=(e)=>{
     e.preventDefault();
     if(!state.userInput.trim()) return;
-    dispatch({type:'START_CENERATION'});
-
+    console.log("dispatching start generation");
+    dispatch({type:'START_GENERATION'});
+     navigator('/prop');
   };
   return (
   <div className="min-h-screen bg-graident-to-b from-blue-50 to-indigo-100 flex flex-col">
@@ -37,7 +39,7 @@ export default function InputView() {
         <h2 className="font-semibold mb-2">试试这些例子</h2>
         <div className="flex flex-wrap gap-2">
           {['想考试得满分',
-            '想瞬间学会做饭','想和远方朋友聊天'
+            '想瞬间学会做饭','想和远方朋友聊天','想飞上空中'
           ].map((text)=>(
             <button
             key={text}
