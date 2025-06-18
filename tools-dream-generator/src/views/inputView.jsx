@@ -1,17 +1,35 @@
+import React from "react";
 import { useAppState } from "../state/Appstate";
 import { useNavigate } from "react-router-dom";
+import Pocket from "../components/Pocket";
+import { useAnimation } from "../components/useAnimation";
+
 export default function InputView() {
   const { state, dispatch } = useAppState();
-  const navigator=useNavigate();
-  const handleSubmit=(e)=>{
+  const navigator = useNavigate();
+  
+  // 使用动画钩子
+  useAnimation();
+  
+  // 添加useEffect监听shouldNavigateToProp状态
+  React.useEffect(() => {
+    if (state.shouldNavigateToProp) {
+      navigator('/prop');
+    }
+  }, [state.shouldNavigateToProp, navigator]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(!state.userInput.trim()) return;
+    if (!state.userInput.trim()) return;
     console.log("dispatching start generation");
-    dispatch({type:'START_GENERATION'});
-     navigator('/prop');
+    
+    // 更新状态以启动动画和生成过程
+    dispatch({ type: 'START_GENERATION' });
+    
+    // 不再需要setTimeout延迟，因为现在由shouldNavigate状态控制
   };
   return (
-  <div className="min-h-screen bg-graident-to-b from-blue-50 to-indigo-100 flex flex-col">
+  <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 flex flex-col">
     <div className="flex-grow flex items-center justify-center p-4 ">
       <div className="w-full max-w-md">
         <h1 className="text-3xl font-bold text-center mb-6 text-indigo-700">
@@ -56,15 +74,13 @@ export default function InputView() {
 
     {/* 口袋按钮占位*/}
 
-    <div className="flex justify-center pb-8 mt-auto">
+    {/* <div className="flex justify-center pb-8 mt-auto">
       <div className="bg-blue-500 w-24 h-16 rounded-b-full flex items-center justify-center text-white font-semibold">
         口袋
         </div>
-        </div>   
-
+        </div>    */}
+  <Pocket/>
   </div>
-
-
 
   );
 

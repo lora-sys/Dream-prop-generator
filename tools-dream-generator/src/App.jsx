@@ -31,7 +31,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<InputView />} />
-            <Route path='prop' element={<PropView />} />
+            {/* 使用正确的 JSX 注释语法 */}
+            <Route path='/prop' element={<PropView />} />
           </Routes>
         </BrowserRouter>
       </ErrorBoundary>

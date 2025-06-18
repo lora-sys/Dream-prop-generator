@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useContext } from 'react';
-import { initalState } from './initialState';
+import { initialState } from './initialState';
 
 const AppStateContext = createContext();
 
@@ -8,7 +8,17 @@ function appReducer(state, action) {
     case 'SET_INPUT':
       return { ...state, userInput: action.payload };
     case 'START_GENERATION':
-      return { ...state, isLoading: true };
+      return { 
+        ...state, 
+        isLoading: true,
+        isAnimating: true // 添加这行以启用动画
+      };
+    case 'STOP_LOADING':
+      return { 
+        ...state, 
+        isLoading: false,
+        isAnimating: false // 可选：在停止加载时也停止动画
+      };
     case 'SET_PROP_DATA':
       return {
         ...state,
@@ -17,17 +27,32 @@ function appReducer(state, action) {
         isLoading: false,
       };
     case 'NAVIGATE_TO_INPUT':
-    return {
-    ...state,
-    currentView:'input'
-    }
+      return {
+        ...state,
+        currentView: 'input',
+        shouldNavigateToInput: true, // 添加这行以触发输入页面导航
+        shouldNavigateToProp: false // 确保不会跳转到道具页面
+      };
+    case 'NAVIGATE_TO_PROP': // 新增的 action 类型
+      return {
+        ...state,
+        currentView: 'prop',
+        shouldNavigateToProp: true, // 添加这行以触发道具页面导航
+        shouldNavigateToInput: false // 确保不会跳转到输入页面
+      };
+    case 'RESET_NAVIGATION': // 新增的 action 类型
+      return {
+        ...state,
+        shouldNavigateToProp: false,
+        shouldNavigateToInput: false
+      };
     default:
       return state;
   }
 }
 
 export function AppStateProvider({ children }) {
-  const [state, dispatch] = useReducer(appReducer, initalState);
+  const [state, dispatch] = useReducer(appReducer, initialState);
   return (
     <AppStateContext.Provider value={{ state, dispatch }}>
       {children}
